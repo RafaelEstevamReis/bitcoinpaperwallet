@@ -106,6 +106,13 @@ function setCryptoCurrency(toThis) {
 		window.compressedWIFPrefix = 'T';
 		document.title = 'Litecoin paper wallet generator';
 		break;
+	case 'DASH':
+		window.networkVersion = 0x4c;
+		window.privateKeyPrefix = 0xcc
+		window.WIFPrefix = '7';
+		window.compressedWIFPrefix = 'X';
+		document.title = 'DASH paper wallet generator.';
+		break;
 	case 'Dogecoin':
 		window.networkVersion = 0x1e;
 		window.privateKeyPrefix = 0x9e;
@@ -141,7 +148,10 @@ switch (myDesign) {
 	case 'alt-litecoin':
 		setCryptoCurrency('Litecoin');
 		break;
-	case 'alt-dogecoin':
+	case 'alt-DASH':
+		setCryptoCurrency('DASH');
+		break;
+		case 'alt-dogecoin':
 		setCryptoCurrency('Dogecoin');
 		break;
 	case 'alt-testnet':
@@ -5420,14 +5430,14 @@ Bitcoin.ECKey = (function () {
 		return /^[A-Fa-f0-9]{64}$/.test(key);
 	};
 
-	// 51 characters base58, bitcoin always starts with a 5, litecoin and dogecoin with a '6', testnet with a '9'
+	// 51 characters base58, bitcoin always starts with a 5, litecoin and dogecoin with a '6', DASH with a '7', testnet with a '9'
 	ECKey.isWalletImportFormat = function (key) {
 		key = key.toString();
 		var matcher = new RegExp("^" + window.WIFPrefix + "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{50}$", "g");
 		return (ECKey.privateKeyPrefix == window.privateKeyPrefix) ? (matcher.test(key)) : false;
 	};
 
-	// 52 characters base58, bitcoin always starts with L or K, litecoin with a T, dogecoin with a 'Q', testnet with a 'c'
+	// 52 characters base58, bitcoin always starts with L or K, litecoin with a T, DASH with a 'X', dogecoin with a 'Q', testnet with a 'c'
 	ECKey.isCompressedWalletImportFormat = function (key) {
 		key = key.toString();
 		var matcher = new RegExp("^" + window.compressedWIFPrefix + "[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{51}$", "g");
@@ -10523,6 +10533,7 @@ Bitcoin.Util = {
                             <option value="custom">Your own custom Bitcoin design</option>
                             <option value="default">--- Other Cryptocurrencies ---</option>
                             <option value="alt-litecoin">Litecoin LTC</option>
+							<option value="alt-DASH">DASH</option>
                             <option value="alt-dogecoin">Dogecoin DOGE</option>
                             <option value="counterparty">Counterparty XCP</option>
                             <option value="alt-testnet">"Testnet"</option>
